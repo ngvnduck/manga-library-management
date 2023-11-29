@@ -1,11 +1,13 @@
-#include<iostream>
+/*#include<iostream>
 #include<string>		
 #include<vector>		// vector
 #include<iomanip>		// for std::setw(n), std::setfill(ch), std::left, std::right
 #include<sstream>		// stringstrean
 #include<fstream>		// file operations
 #include<cctype>		// using tolower() function
-
+#include <chrono>
+#include <thread>*/
+#include <bits/stdc++.h>
 using namespace std;
 class Manga {
 	public:
@@ -46,13 +48,14 @@ void show(const Manga &m) {
 	cout << setw(5) << right << m.rate << endl;
 }
 void showList(const vector<Manga> &list) {
+	if(list.size()==0) return;
 	cout << setfill(' ');
 	cout << setw(2) << left << "" << "| ";
-	cout << setw(45) << left << "Title";
-	cout << setw(50) << left << "Tags";
-	cout << setw(22) << left << "Author";
-	cout << setw(20) << left << "Date released";
-	cout << setw(5) << right << "Rating" << endl;
+	cout <<"\033[31m"<< setw(45) << left << "Title";
+	cout <<"\033[32m"<< setw(50) << left << "Tags";
+	cout <<"\033[33m"<< setw(22) << left << "Author";
+	cout <<"\033[34m"<< setw(20) << left << "Date released";
+	cout <<"\033[35m"<< setw(5) << right << "Rating" << endl << "\033[0m";
 	cout << setfill('-') << setw(147) << "-" << endl;
 	for (int i = 0; i < list.size(); i++) {
 		cout << setfill(' ') << setw(2)<< left << i+1 <<"| ";
@@ -95,77 +98,124 @@ string lowercase(const string& str) {
     }
     return result;
 }
-void searchbyName(const vector<Manga> &list) {
+vector<Manga> searchbyName(const vector<Manga> &list) {
+	vector<Manga> result;
 	string keyword;
 	cout << "Finding keyword: ";
 	getline(cin,keyword); keyword = lowercase(keyword);
-	bool found=false;
 	for (int i=0; i<list.size(); i++) {
 		if(lowercase(list[i].name).find(keyword) != string::npos) {
-			show(list[i]);
-			found = true;
+			result.push_back(list[i]);
 		}
 	}
-	if(!found) cout << "Can't find any manga with that keyword.";
+	if(!result.size()) {
+		cout << "Can't find any manga with that keyword." << endl;
+		return list;
+	}
+	showList(result);
+	return result;
 }
-void searchbyTag(const vector<Manga> &list) {
+vector<Manga> searchbyTag(const vector<Manga> &list) {
+	vector<Manga> result;
 	string keyword; keyword = lowercase(keyword);
 	cout << "Finding tags: ";
 	getline(cin,keyword);
-	bool found=false;
 	for (int i=0; i<list.size(); i++) {
 		for(int j=0;j<list[i].tag.size();j++) {
 			if(lowercase(list[i].tag[j]).find(keyword) != string::npos) {
-				show(list[i]);
-				found = true;
+				result.push_back(list[i]);
 				break;
 		}
 		}
 	}
-	if(!found) cout << "Can't find any manga with that tags.";
+	if(!result.size()) {
+		cout << "Can't find any manga with that tags." << endl;
+		return list;
+	}
+	showList(result);
+	return result;
 }
-void searchbyAuthor(const vector<Manga> &list) {
+vector<Manga> searchbyAuthor(const vector<Manga> &list) {
+	vector<Manga> result;
 	string keyword; keyword = lowercase(keyword);
 	cout << "Finding author: ";
 	getline(cin,keyword);
-	bool found=false;
 	for (int i=0; i<list.size(); i++) {
 		if(lowercase(list[i].author).find(keyword) != string::npos) {
-			show(list[i]);
-			found = true;
+			result.push_back(list[i]);
 		}
 	}
-	if(!found) cout << "Can't find any manga with that author.";
+	if(!result.size()) {
+		cout << "Can't find any manga with that author." << endl;
+		return list;
+	}
+	showList(result);
+	return result;
 }
-void searchbyYear(const vector<Manga> &list) {
+vector<Manga> searchbyYear(const vector<Manga> &list) {
+	vector<Manga> result;
 	string keyword;
 	cout << "Finding year released: ";
 	getline(cin,keyword);
-	bool found=false;
 	for (int i=0; i<list.size(); i++) {
 		if(list[i].date.find(keyword) != string::npos) {
-			show(list[i]);
-			found = true;
+			result.push_back(list[i]);
 		}
 	}
-	if(!found) cout << "Can't find any manga released in that year.";
+	if(!result.size()) {
+		cout << "Can't find any manga released in that year." << endl;
+		return list;
+	}
+	showList(result);
+	return result;
 }
-void searchbyRating(const vector<Manga> &list) {
+vector<Manga> searchbyRating(const vector<Manga> &list) {
+	vector<Manga> result;
 	double r;
 	cout << "Finding mangas with rating above: ";
 	cin >> r;
-	bool found=false;
 	for (int i=0; i<list.size(); i++) {
 		if(list[i].rate >= r) {
-			show(list[i]);
-			found = true;
+			result.push_back(list[i]);
 		}
 	}
-	if(!found) cout << "Can't find any manga above that rating.";
+	if(!result.size()) {
+		cout << "Can't find any manga above that rating." << endl;
+		return list;
+	}
+	showList(result);
+	return result;
 }
-void filter(const vector<Manga> &list) {
-	
-}
+void search(const vector<Manga> &list) {
+	vector<Manga> result=list;
+	cout << "Criteria:" << endl;
+	cout << "[1] Name" << endl << "[2] Tags" << endl << "[3] Author" << endl << "[4] Year" << endl << "[5] Rating" << endl << "[0] Cancel" << endl;
+	while(1) {
+	cout << "Search by: ";
+	int choice; cin >> choice; cin.ignore();
+	switch (choice) {
+		case 1:
+			result=searchbyName(result);
+			break;
+		case 2:
+			result=searchbyTag(result);
+			break;
+		case 3:
+			result=searchbyAuthor(result);
+			break;
+		case 4:
+			result=searchbyYear(result);
+			break;
+		case 5:
+			result=searchbyRating(result);
+			break;
+		case 0:
+			return;
+			break;
+		default:
+			cout << "Invalid choice." << endl;
+	}
+}}
 void readfile(vector<Manga> &list) {
 	ifstream save("manga_list.txt");
 	if(save.is_open()) {
@@ -207,10 +257,43 @@ void writeToFile(const vector<Manga> &list) {
     }
     output.close();
 }
+void menu(vector<Manga> &list) {
+	cout << "---------------Options---------------" << endl;
+	cout << "[1] All manga titles" << endl;
+	cout << "[2] Search" << endl;
+	cout << "[3] Add new manga" << endl;
+	cout << "[4] Delete" << endl;
+	cout << "[5] Update manga" << endl;
+	while(1) {
+		cout << "Your choice: ";
+		int choice; cin >> choice; cin.ignore();
+		switch (choice) {
+			case 1:
+				showList(list);
+				break;
+			case 2:
+				search(list);
+				break;
+			case 3:
+				add(list);
+				break;
+			case 4:
+				remove(list);
+				break;
+			case 5:
+				update(list);
+				break;
+			case 0:
+				return;
+			default:
+				cout << "Invalid choice." << endl;
+		}
+	}
+}
 int main() {
 	vector<Manga> list;
 	readfile(list);
-	showList(list);
-	searchbyTag(list);
+	this_thread::sleep_for(chrono::seconds(2)); // Delay 2 seconds
+	menu(list);
 	return 0;
 }
