@@ -1,13 +1,11 @@
-/*#include<iostream>
+#include<iostream>
 #include<string>		
 #include<vector>		// vector
 #include<iomanip>		// for std::setw(n), std::setfill(ch), std::left, std::right
 #include<sstream>		// stringstrean
 #include<fstream>		// file operations
 #include<cctype>		// using tolower() function
-#include <chrono>
-#include <thread>*/
-#include <bits/stdc++.h>
+#include<limits>
 using namespace std;
 class Manga {
 	public:
@@ -17,6 +15,21 @@ class Manga {
 		string date;
 		double rate;
 };
+template <typename T>
+void inputNumber (T& i) {
+	while (1) {
+        if (cin >> i) {
+        	cin.ignore();
+			break;
+        } else {
+            // Input failed
+            cout << "Invalid input. Please enter an integer: ";
+            cin.clear(); // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+            cin.ignore();
+        }
+    }
+}
 void input(Manga &m) {
 	cout << "Title: ";
 	getline(cin, m.name);
@@ -31,8 +44,7 @@ void input(Manga &m) {
 	cout << "Date released: ";
 	getline(cin, m.date);
 	cout << "Rating: ";
-	cin >> m.rate;
-	cin.ignore();
+	inputNumber(m.rate);
 }
 void show(const Manga &m) {
 	cout << setfill(' ');
@@ -48,7 +60,10 @@ void show(const Manga &m) {
 	cout << setw(5) << right << m.rate << endl;
 }
 void showList(const vector<Manga> &list) {
-	if(list.size()==0) return;
+	if(list.size()==0) {
+		cout << "Empty list!" << endl;
+		return;
+	}
 	cout << setfill(' ');
 	cout << setw(2) << left << "" << "| ";
 	cout <<"\033[31m"<< setw(45) << left << "Title";
@@ -71,7 +86,7 @@ void add(vector<Manga> &list) {
 }
 void remove(vector<Manga> &list) {
 	cout << "Index of the manga that you want to delete: ";
-	int n; cin >> n;
+	int n; inputNumber(n);
 	if (n>0 && n<list.size()+1) {
 		list.erase(list.begin()+n-1);
 		cout << "Manga index = " << n << " has been removed." << endl;
@@ -80,7 +95,7 @@ void remove(vector<Manga> &list) {
 }
 void update(vector<Manga> &list) {
 	cout << "Choose index: ";
-	int choice; cin >> choice; cin.ignore();
+	int choice; inputNumber(choice);
 	if(choice<1 || choice>list.size()) {
 		cout << "Invalid index." << endl;
 		return;
@@ -101,7 +116,7 @@ string lowercase(const string& str) {
 vector<Manga> searchbyName(const vector<Manga> &list) {
 	vector<Manga> result;
 	string keyword;
-	cout << "Finding keyword: ";
+	cout << "Searching for keyword: ";
 	getline(cin,keyword); keyword = lowercase(keyword);
 	for (int i=0; i<list.size(); i++) {
 		if(lowercase(list[i].name).find(keyword) != string::npos) {
@@ -117,9 +132,9 @@ vector<Manga> searchbyName(const vector<Manga> &list) {
 }
 vector<Manga> searchbyTag(const vector<Manga> &list) {
 	vector<Manga> result;
-	string keyword; keyword = lowercase(keyword);
-	cout << "Finding tags: ";
-	getline(cin,keyword);
+	string keyword;
+	cout << "Searching for tags: ";
+	getline(cin,keyword); keyword = lowercase(keyword);
 	for (int i=0; i<list.size(); i++) {
 		for(int j=0;j<list[i].tag.size();j++) {
 			if(lowercase(list[i].tag[j]).find(keyword) != string::npos) {
@@ -137,9 +152,9 @@ vector<Manga> searchbyTag(const vector<Manga> &list) {
 }
 vector<Manga> searchbyAuthor(const vector<Manga> &list) {
 	vector<Manga> result;
-	string keyword; keyword = lowercase(keyword);
-	cout << "Finding author: ";
-	getline(cin,keyword);
+	string keyword;
+	cout << "Searching for author: ";
+	getline(cin,keyword); keyword = lowercase(keyword);
 	for (int i=0; i<list.size(); i++) {
 		if(lowercase(list[i].author).find(keyword) != string::npos) {
 			result.push_back(list[i]);
@@ -155,7 +170,7 @@ vector<Manga> searchbyAuthor(const vector<Manga> &list) {
 vector<Manga> searchbyYear(const vector<Manga> &list) {
 	vector<Manga> result;
 	string keyword;
-	cout << "Finding year released: ";
+	cout << "Searching for year released: ";
 	getline(cin,keyword);
 	for (int i=0; i<list.size(); i++) {
 		if(list[i].date.find(keyword) != string::npos) {
@@ -172,8 +187,8 @@ vector<Manga> searchbyYear(const vector<Manga> &list) {
 vector<Manga> searchbyRating(const vector<Manga> &list) {
 	vector<Manga> result;
 	double r;
-	cout << "Finding mangas with rating above: ";
-	cin >> r;
+	cout << "Searching for mangas with rating above: ";
+	inputNumber(r);
 	for (int i=0; i<list.size(); i++) {
 		if(list[i].rate >= r) {
 			result.push_back(list[i]);
@@ -188,11 +203,11 @@ vector<Manga> searchbyRating(const vector<Manga> &list) {
 }
 void search(const vector<Manga> &list) {
 	vector<Manga> result=list;
-	cout << "Criteria:" << endl;
-	cout << "[1] Name" << endl << "[2] Tags" << endl << "[3] Author" << endl << "[4] Year" << endl << "[5] Rating" << endl << "[0] Cancel" << endl;
 	while(1) {
+	cout << "Criteria:" << endl;
+	cout << "[1] Name" << endl << "[2] Tags" << endl << "[3] Author" << endl << "[4] Year" << endl << "[5] Rating" << endl << "[6] Refresh filter" << endl << "[0] Cancel" << endl;
 	cout << "Search by: ";
-	int choice; cin >> choice; cin.ignore();
+	int choice; inputNumber(choice);
 	switch (choice) {
 		case 1:
 			result=searchbyName(result);
@@ -208,6 +223,10 @@ void search(const vector<Manga> &list) {
 			break;
 		case 5:
 			result=searchbyRating(result);
+			break;
+		case 6:
+			result=list;
+			cout << "Filter refreshed." << endl;
 			break;
 		case 0:
 			return;
@@ -233,6 +252,7 @@ void readfile(vector<Manga> &list) {
 			if(getline(save, line)) m.rate=stod(line);
 			list.push_back(m);
 		}
+		cout << "Manga list loaded!" << endl;
 	} else cout << "Failed to load manga list!" << endl;
 	save.close();
 }
@@ -257,43 +277,56 @@ void writeToFile(const vector<Manga> &list) {
     }
     output.close();
 }
-void menu(vector<Manga> &list) {
+void menu() {
 	cout << "---------------Options---------------" << endl;
-	cout << "[1] All manga titles" << endl;
-	cout << "[2] Search" << endl;
-	cout << "[3] Add new manga" << endl;
-	cout << "[4] Delete" << endl;
-	cout << "[5] Update manga" << endl;
-	while(1) {
-		cout << "Your choice: ";
-		int choice; cin >> choice; cin.ignore();
-		switch (choice) {
-			case 1:
-				showList(list);
-				break;
-			case 2:
-				search(list);
-				break;
-			case 3:
-				add(list);
-				break;
-			case 4:
-				remove(list);
-				break;
-			case 5:
-				update(list);
-				break;
-			case 0:
-				return;
-			default:
-				cout << "Invalid choice." << endl;
-		}
-	}
+	cout << "[1] Display main functions" << endl;
+	cout << "[2] All manga titles" << endl;
+	cout << "[3] Search" << endl;
+	cout << "[4] Add new manga" << endl;
+	cout << "[5] Delete" << endl;
+	cout << "[6] Update manga" << endl;
+	cout << "[7] Help" << endl;
+	cout << "[8] About" << endl;
+	cout << "[0] Exit" << endl;
 }
 int main() {
 	vector<Manga> list;
 	readfile(list);
-	this_thread::sleep_for(chrono::seconds(2)); // Delay 2 seconds
-	menu(list);
+	menu();
+	while(1) {
+		cout << "-------------------------------------" << endl;
+		cout << "Your choice: ";
+		int choice; inputNumber(choice);
+		switch (choice) {
+			case 1:
+				menu();
+				break;
+			case 2:
+				showList(list);
+				break;
+			case 3:
+				search(list);
+				break;
+			case 4:
+				add(list);
+				break;
+			case 5:
+				remove(list);
+				break;
+			case 6:
+				update(list);
+				break;
+			case 7:
+				cout << "Help yourself." << endl;
+				break;
+			case 8:
+				cout << "About" << endl;
+				break;
+			case 0:
+				return 0;
+			default:
+				cout << "Invalid choice." << endl;
+		}
+	}
 	return 0;
 }
