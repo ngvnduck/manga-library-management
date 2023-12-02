@@ -1,5 +1,5 @@
 # manga-library-management
-*Purpose: Practice*
+*Purpose: Practice*<br>
 Using C++ to create an application to store manga list, can search manga by name, tag, author...<br>
 ...This is an on-going project...<br>
 # Note
