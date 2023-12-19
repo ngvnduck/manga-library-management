@@ -7,7 +7,7 @@
 #include<cctype>		// using tolower() function
 #include<limits>
 #include<conio.h>		// for _kbhit() and _getch() functions
-#include <cstdlib> 		// for exit function
+#include<cstdlib> 		// for exit function
 
 using namespace std;
 // Support functions
