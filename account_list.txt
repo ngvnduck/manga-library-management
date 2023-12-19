@@ -1,0 +1,6 @@
+User,John Doe,123456789,01/01/1990,1234567890,john.doe@gmail.com,john,000111222
+User,Jane Smith,987654321,15/05/1995,9876543210,jane.smith@gmail.com,jane_smith,12345678
+Student,Le Duc,0015076899,06/09/2003,0957960043,lelo1@sis.hust.edu.vn,lelo1,leloaloalo,20213697,IoT-02,K66,SEEE - HUST
+Student,Huynh,0013029292,16/05/2003,0956066677,huynh165@gmail.com,huynh165,RatAnToan,20210191,IoT-02,K66,SEEE - HUST
+Staff,Admin1,0076849494,05/12/1985,6543219870,admin1@hust.edu.vn,admin1,admin1,98765,SoICT - HUST,IT Department
+Staff,Admin2,00696969696,25/08/1999,3219876540,admin2@hust.edu.vn,admin2,admin_pass,54321,SEEE - HUST,HR Department
