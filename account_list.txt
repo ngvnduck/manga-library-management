@@ -1,6 +1,0 @@
-User,John Doe,123456789,1990-01-01,1234567890,john.doe@example.com,john_doe,secure_password
-User,Jane Smith,987654321,1985-05-15,9876543210,jane.smith@example.com,jane_smith,another_password
-Student,Student1,987654321,1998-07-20,9876543210,student1@example.com,student1,student_password,12345,Computer Science,Freshman,University A
-Student,Student2,123456789,1997-03-10,1234567890,student2@example.com,student2,student_password,67890,Engineering,Sophomore,University B
-Staff,Staff1,654321987,1980-12-05,6543219870,staff1@example.com,staff1,staff_password,98765,University C,IT Department
-Staff,Staff2,321987654,1975-08-25,3219876540,staff2@example.com,staff2,staff_password,54321,University D,HR Department
