@@ -478,7 +478,8 @@ void createAccount(vector<Person*> &people) {
 	}
 }
 
-string asterisk (string &pass) {
+void asterisk (string &pass) {
+	pass = ""; // Clear the password string
 	char ch;
 	while (true) {
 	    ch = _getch(); // Get a character without echoing it to the console
@@ -490,10 +491,9 @@ string asterisk (string &pass) {
 	        pass.pop_back();
 	    } else if (isprint(ch)) { // Check if the character is printable
 	        cout << '*';
-	        pass += ch;
+	        pass.push_back(ch);
 	    }
     }
-    return pass;
 }
 
 void login(vector<Person*> &people) {
