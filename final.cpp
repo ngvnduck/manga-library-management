@@ -336,7 +336,7 @@ vector<Person*> people; // Vector to store Person* objects // Global
 
 // Function to save data to a text file
 void writeToFile(const vector<Person*>& people) {
-    ofstream outFile("account_list.txt");
+    ofstream outFile("account_list.txt", ios::trunc);
     if (!outFile.is_open()) {
         cerr << "Error: Unable to open file for writing." << endl;
         return;
@@ -371,6 +371,11 @@ void writeToFile(const vector<Person*>& people) {
 
 // Function to read data from a text file and append to the vector
 void readfile(vector<Person*>& people) {
+	for (auto& personPtr : people) {
+        delete personPtr;
+    }
+    people.clear();
+	people.shrink_to_fit();
     ifstream inFile("account_list.txt");
     if (!inFile.is_open()) {
         cout << "Error: Unable to open file for reading." << endl;
@@ -479,7 +484,7 @@ void createAccount(vector<Person*> &people) {
 }
 
 void asterisk (string &pass) {
-	pass = ""; // Clear the password string
+	pass = "";
 	char ch;
 	while (true) {
 	    ch = _getch(); // Get a character without echoing it to the console
@@ -488,6 +493,9 @@ void asterisk (string &pass) {
 	        break;
 	    } else if (ch == 8 && !pass.empty()) { // Check if Backspace is pressed
 	        cout << "\b \b"; // Move the cursor back, print a space, move back again
+	        pass.pop_back();
+	    } else if (ch == 127 && !pass.empty()) { // Check if Delete is pressed
+	        cout << " \b";
 	        pass.pop_back();
 	    } else if (isprint(ch)) { // Check if the character is printable
 	        cout << '*';
@@ -756,6 +764,8 @@ void search(const vector<Manga> &list) {
 	}
 }}
 void readfile(vector<Manga> &list) {
+	list.clear();
+	list.shrink_to_fit();
 	ifstream save("manga_list.txt");
 	if(save.is_open()) {
 		string line;
@@ -777,7 +787,7 @@ void readfile(vector<Manga> &list) {
 	save.close();
 }
 void writeToFile(const vector<Manga> &list) {
-    ofstream output("manga_list.txt");
+    ofstream output("manga_list.txt", ios::trunc);
     if (output.is_open()) {
         for (const Manga &m : list) {
             // Write each field of the Manga object to the file
@@ -890,16 +900,20 @@ int main() {
 				break;
 			case 4:
 				add(list);
+				writeToFile(list);
 				break;
 			case 5:
 				remove(list);
+				writeToFile(list);
 				break;
 			case 6:
 				update(list);
+				writeToFile(list);
 				break;
 			case 7:
 				st = dynamic_cast<Staff*>(current);
 				st->createAdminAccount(people);
+				writeToFile(people);
 				break;
 			case 8:
 				st = dynamic_cast<Staff*>(current);
@@ -912,7 +926,11 @@ int main() {
 					int c;
 					inputNumber(c);
 					if (c==0) break;
-					else if (c==1) st->changePassword(people);
+					else if (c==1) {
+						st->changePassword(people);
+						writeToFile(people);
+						break;
+					}
 					else cout << "Invalid number." << endl;
 				}
 				break;
@@ -929,10 +947,17 @@ int main() {
 					if (c==0) break;
 					else if (c==1) {
 						string newpass;
+						cout << "New password: ";
 						getline(cin,newpass);
 						current->setPassword(newpass);
+						writeToFile(people);
+						break;
 					}
-					else if (c==2) current->input(people);
+					else if (c==2) {
+						current->input(people);
+						writeToFile(people);
+						break;
+					}
 					else cout << "Invalid number." << endl;
 				}
 				break;
@@ -940,7 +965,6 @@ int main() {
 				cout << "Confirm log out. [Y/N]: ";
 				getline(cin,cf);
 				if (lowercase(cf) == "y") {
-					writeToFile(people);
 					writeToFile(list);
 					goto begin;
 				}
@@ -978,10 +1002,16 @@ int main() {
 					if (c==0) break;
 					else if (c==1) {
 						string newpass;
+						cout << "New password: ";
 						getline(cin,newpass);
 						current->setPassword(newpass);
+						writeToFile(people);
+						break;
 					}
-					else if (c==2) current->input(people);
+					else if (c==2) {
+						current->input(people);
+						break;
+					}
 					else cout << "Invalid number." << endl;
 				}
 				break;
@@ -995,7 +1025,6 @@ int main() {
 				cout << "Confirm log out. [Y/N]: ";
 				getline(cin,cf);
 				if (lowercase(cf) == "y") {
-					writeToFile(list);
 					goto begin;
 				}
 				else break;
