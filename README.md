@@ -3,6 +3,8 @@
 Using C++ to create an application to store manga list, can search manga by name, tag, author...<br><br>
 **The program file is "final.cpp"**
 # Note
-Put "manga_list.txt" in the same folder with the .cpp file<br>
-Put "account_list.txt" in the same folder with the .cpp file<br>
-Put "capybara.txt" in the same folder with the .cpp file (for the starting logo)
+The .txt files must be put in the same folder with the final.cpp<br>
+- "manga_list.txt":&emsp;&ensp; manga list
+- "account_list.txt":&emsp; account list
+- "capybara.txt":&emsp;&emsp;&nbsp; starting logo
+
