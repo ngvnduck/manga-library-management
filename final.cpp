@@ -5,7 +5,7 @@
 #include<sstream>		// stringstrean
 #include<fstream>		// file operations
 #include<cctype>		// using tolower() function
-#include<limits>
+#include<limits>		// clear buffer
 #include<conio.h>		// for _kbhit() and _getch() functions
 #include<cstdlib> 		// for exit function
 
