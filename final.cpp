@@ -831,7 +831,7 @@ void menu() {
 	cout << "[0] Save & Log out" << endl;
 }
 void help() {
-	cout << "Help yourself" << endl;
+	cout << "Contact me at: duc.nv213698@sis.hust.edu.vn for any problems." << endl;
 }
 void about() {
 	cout << "Program written by Duke ..." << endl;
